@@ -1,0 +1,19 @@
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  test-workflow:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test the workflow
+      uses: RyanSiu1995/kubebuilder-action@master
+      with:
+        version: 2.3.1
+    - name: Check the existence of kubebuilder
+      run: |-
+        if [[ ! -d /usr/local/kubebuilder ]]; then
+          echo "No kubebuilder installed"
+          exit 0
+        fi
