@@ -1,0 +1,12 @@
+name: 'Kubebuilder Installation'
+description: 'Install the kubebuilder to the local environment'
+inputs:
+  version:  # id of input
+    description: 'Version of kubebuilder being installed'
+    required: true
+    default: '2.3.1'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.version }}
