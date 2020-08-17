@@ -15,3 +15,6 @@ uses: RyanSiu1995/kubebuilder-action@v1
 with:
   version: 2.3.1
 ```
+
+## License
+This software is released under Apache License 2.0. Please refer to [LICENSE](LICENSE) file for more details.
