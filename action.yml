@@ -6,7 +6,5 @@ inputs:
     required: true
     default: '2.3.1'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.version }}
+  using: 'node12'
+  main: 'index.js'

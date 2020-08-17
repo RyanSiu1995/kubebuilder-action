@@ -1,0 +1,25 @@
+{
+  "name": "kubebuilder-action",
+  "version": "1.0.0",
+  "description": "This action provides a sugar syntax to install the kubebuilder in the ubuntu machine. The installation process is based on kubebuilder v2.3.1.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyanSiu1995/kubebuilder-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RyanSiu1995/kubebuilder-action/issues"
+  },
+  "homepage": "https://github.com/RyanSiu1995/kubebuilder-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@actions/tool-cache": "^1.6.0"
+  }
+}

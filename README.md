@@ -10,6 +10,8 @@ This action provides a sugar syntax to install the kubebuilder in the ubuntu mac
 
 ## Example usage
 
+```yaml
 uses: RyanSiu1995/kubebuilder-action@v1
 with:
   version: 2.3.1
+```

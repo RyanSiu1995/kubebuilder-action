@@ -15,5 +15,5 @@ jobs:
       run: |-
         if [[ ! -d /usr/local/kubebuilder ]]; then
           echo "No kubebuilder installed"
-          exit 0
+          exit 1
         fi
