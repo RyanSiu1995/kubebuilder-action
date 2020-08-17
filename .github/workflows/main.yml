@@ -16,7 +16,7 @@ jobs:
     - name: Check the existence of kubebuilder
       run: |-
         cd /usr/local/kubebuilder/bin
-        if [ [ -f "./kubectl" ] && [ -f "./kube-apiservice" ] && [ -f "./etcd" ] && [ -f "./kubebuilder"] ]; then
+        if [[ -f "./kubectl" ]] && [[ -f "./kube-apiserver" ]] && [[ -f "./etcd" ]] && [[ -f "./kubebuilder" ]]; then
           echo "All binaries from kubebuilder have been installed!"
         else
           echo "Cannot find the binaries from kubuilder!"
