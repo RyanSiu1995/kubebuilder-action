@@ -22,14 +22,13 @@ async function run() {
   
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
-    await child_process.exec('sudo mkdir -p /usr/local/kubebuilder/bin/')
-
     const downloadUrl = `https://go.kubebuilder.io/dl/${version}/${osPlat}/${osArch}`;
-    const downloadPath = await tc.downloadTool(downloadUrl, undefined, undefined);
-    
-    const extPath = await tc.extractTar(downloadPath);
-  
-    await child_process.exec(`sudo cp ${extPath}/bin/ /usr/local/kubebuilder/bin/`)
+    child_process.execSync(`curl -L ${downloadUrl} | tar -xz -C /tmp/`, { shell: '/bin/bash'})
+    child_process.execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`, { shell: '/bin/bash'})
+    child_process.execSync(`ls -la /usr/local/kubebuilder/bin`, { shell: '/bin/bash'})
+
+    const cachedPath = await tc.cacheDir('/usr/local/kubebuilder', 'kubebuildrr', version);
+    core.addPath(cachedPath);
   } catch (error) {
     core.setFailed(error.message);
   }

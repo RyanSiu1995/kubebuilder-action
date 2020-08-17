@@ -20,4 +20,6 @@ jobs:
           echo "All binaries from kubebuilder have been installed!"
         else
           echo "Cannot find the binaries from kubuilder!"
+          ls -la ./
+          exit 1
         fi
