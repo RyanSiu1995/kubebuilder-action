@@ -7,8 +7,10 @@ jobs:
   test-workflow:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Test the workflow
-      uses: RyanSiu1995/kubebuilder-action@master
+      uses: ./
       with:
         version: 2.3.1
     - name: Check the existence of kubebuilder
