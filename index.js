@@ -6,7 +6,7 @@ const fs = require('fs');
 const child_process = require('child_process');
 
 const supportedCombination = ["darwin-amd64", "linux-amd64", "linux-arm64", "linux-ppc64le"];
-const installedBinary = ["kubectl", "kube-apisever", "kubebuilder", "etcd"];
+const installedBinary = ["kubectl", "kube-apiserver", "kubebuilder", "etcd"];
 
 async function run() {
   try {
