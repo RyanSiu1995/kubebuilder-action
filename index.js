@@ -27,7 +27,7 @@ async function run() {
     child_process.execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`, { shell: '/bin/bash'})
     child_process.execSync(`ls -la /usr/local/kubebuilder/bin`, { shell: '/bin/bash'})
 
-    const cachedPath = await tc.cacheDir('/usr/local/kubebuilder', 'kubebuildrr', version);
+    const cachedPath = await tc.cacheDir('/usr/local/kubebuilder', 'kubebuilder', version);
     core.addPath(cachedPath);
   } catch (error) {
     core.setFailed(error.message);
