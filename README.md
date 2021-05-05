@@ -1,7 +1,7 @@
 # Kubebuilder installation docker action
 
 This action provides a sugar syntax to install the kubebuilder
-in the ubuntu machine. The installation process is based on kubebuilder v2.3.1.
+ in the ubuntu machine. The installation process is based on kubebuilder v2.3.1.
 
 ## Inputs
 
@@ -12,20 +12,20 @@ in the ubuntu machine. The installation process is based on kubebuilder v2.3.1.
 ### `kubebuilderOnly`
 
 **Optional** a flag to install kubebuilder binary only.
-Default as `false`, which is default behavor in 2.x.x.
+ Default as `false`, which is default behavor in 2.x.x.
 
 ### `etcdVersion`
 
 **Optional** The etcd version going to be installed.
-Respected if kubebuilderOnly is `false` and
-major version of kubebuilder is greater than or equal to 3. Default `"v3.2.32"`
+ Respected if kubebuilderOnly is `false` and
+ major version of kubebuilder is greater than or equal to 3. Default `"v3.2.32"`
 
 ### `kubernetesVersion`
 
 **Optional** The kubectl and kube-apiserver version going to be installed.
-Respected if kubebuilderOnly is `false` and
+ Respected if kubebuilderOnly is `false` and
 major version of kubebuilder is greater than or equal to 3.
-Default to use latest version.
+ Default to use latest version.
 
 ## Example usage
 
@@ -38,7 +38,7 @@ with:
 ## How to run E2E test locally
 
 Install [act](https://github.com/nektos/act). Then,
-run `act` directly under the working repository.
+ run `act` directly under the working repository.
 
 If you encounter the following error,
 
@@ -59,7 +59,7 @@ If you encounter the following error,
 ```
 
 please add these two lines to [workflow definition](.github/workflows/main.yml)
-under checkout step.
+ under checkout step.
 
 ```
 with:
@@ -69,4 +69,4 @@ with:
 ## License
 
 This software is released under Apache License 2.0. Please refer
-to [LICENSE](LICENSE) file for more details.
+ to [LICENSE](LICENSE) file for more details.
