@@ -1,7 +1,7 @@
 name: 'Kubebuilder Installation'
 description: 'Install the kubebuilder to the local environment'
 inputs:
-  version:  # id of input
+  version:
     description: 'Version of kubebuilder being installed'
     required: true
     default: '2.3.1'
@@ -9,6 +9,9 @@ inputs:
     description: 'A flag to make the behaviour between 2.x.x and 3.x.x to be the same'
     required: false
     default: false
+  etcdVersion:
+    description: 'Valid if kubebuilderOnly is false for 3.0.0+. The action will install etcd with this version'
+    required: false
 runs:
   using: 'node12'
   main: 'index.js'
