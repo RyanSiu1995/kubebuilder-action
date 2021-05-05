@@ -9,14 +9,34 @@ const supportedCombination = ["darwin-amd64", "linux-amd64", "linux-arm64", "lin
 const installedBinary = ["kubectl", "kube-apiserver", "kubebuilder", "etcd"];
 
 function execSync(command) {
-  child_process.execSync(command, {shell: '/bin/bash'})
+  child_process.execSync(command, {shell: '/bin/bash'});
 }
 
 async function run() {
   try {
     const version = core.getInput('version');
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
-    const etcdVersion = core.getInput('etcdVersion') || 'v3.2.32';
+    let etcdVersion = core.getInput('etcdVersion');
+    let kubernetesVersion = core.getInput('kubernetesVersion');
+    const majorVersion = version.split(".")[0];
+
+    if (kubebuilderOnly && etcdVersion) {
+      core.warning("kubebuilderOnly is activated. etcdVersion will not be respected.");
+    } else if (!kubebuilderOnly && etcdVersion && ! majorVersion > 2) {
+      core.warning("Requested kubebuilder major version is less than 3. etcdVersion will not be respected.");
+    } else if (!kubebuilderOnly && !!!etcdVersion) {
+      core.info("No etcdVersion specified. Going to use the default one.");
+      etcdVersion = 'v3.2.32';
+    }
+
+    if (kubebuilderOnly && kubernetesVersion) {
+      core.warning("kubebuilderOnly is activated. kubernetesVersion will not be respected.");
+    } else if (!kubebuilderOnly && kubernetesVersion && ! majorVersion > 2) {
+      core.warning("Requested kubebuilder major version is less than 3. kubernetesVersion will not be respected.");
+    } else if (!kubebuilderOnly && !!!kubernetesVersion) {
+      core.info("No kubernetesVersion specified. Going to use the latest one.");
+    }
+
     const osPlat = os.platform();
     var osArch = os.arch();
     if (osArch === "x64") {
@@ -29,40 +49,45 @@ async function run() {
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
     const downloadUrl = `https://go.kubebuilder.io/dl/${version}/${osPlat}/${osArch}`;
-    const majorVersion = version.split(".")[0]
+
     if (majorVersion > 2) {
-      core.debug(`MajorVersion is greater than 2`)
-      execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`)
-      execSync(`sudo curl -L ${downloadUrl} -o /usr/local/kubebuilder/bin/kubebuilder`)
-      execSync(`sudo chmod +x /usr/local/kubebuilder/bin/kubebuilder`)
+      core.debug(`MajorVersion is greater than 2`);
+      execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`);
+      execSync(`sudo curl -L ${downloadUrl} -o /usr/local/kubebuilder/bin/kubebuilder`);
+      execSync(`sudo chmod +x /usr/local/kubebuilder/bin/kubebuilder`);
       if (!kubebuilderOnly) {
         // Install kubectl and kube-apiserver
         ["kubectl", "kube-apiserver"].map((binary) => {
-          core.info(`Going to install ${binary}`)
-          execSync(`curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/${binary}"`)
-          execSync(`chmod +x ${binary}`)
-          execSync(`sudo mv ${binary} /usr/local/kubebuilder/bin`)
+          if (kubernetesVersion) {
+            core.info(`Going to install ${binary} ${kubernetesVersion}`);
+            execSync(`curl -LO "https://dl.k8s.io//release/${kubernetesVersion}/bin/${osPlat}/${osArch}/${binary}"`);
+          } else {
+            core.info(`Going to install ${binary} in latest version`);
+            execSync(`curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/${osPlat}/${osArch}/${binary}"`);
+          }
+          execSync(`chmod +x ${binary}`);
+          execSync(`sudo mv ${binary} /usr/local/kubebuilder/bin`);
         })
         // Install etcd
-        core.info(`Going to install etcd ${etcdVersion}`)
-        execSync(`curl -L https://github.com/etcd-io/etcd/releases/download/${etcdVersion}/etcd-${etcdVersion}-linux-amd64.tar.gz | tar -xz --strip-components=1 -C /tmp/`)
-        execSync(`sudo mv /tmp/etcd /usr/local/kubebuilder/bin`)
+        core.info(`Going to install etcd ${etcdVersion}`);
+        execSync(`curl -L https://github.com/etcd-io/etcd/releases/download/${etcdVersion}/etcd-${etcdVersion}-${osPlat}-${osArch}.tar.gz | tar -xz --strip-components=1 -C /tmp/`);
+        execSync(`sudo mv /tmp/etcd /usr/local/kubebuilder/bin`);
       } else {
-        core.debug(`No extra binary will be installed.`)
+        core.debug(`No extra binary will be installed.`);
       }
     } else {
-      execSync(`curl -L ${downloadUrl} | tar -xz -C /tmp/`)
-      execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`)
-      execSync(`ls -la /usr/local/kubebuilder/bin`)
+      execSync(`curl -L ${downloadUrl} | tar -xz -C /tmp/`);
+      execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`);
+      execSync(`ls -la /usr/local/kubebuilder/bin`);
       if (kubebuilderOnly) {
         installedBinary
           .filter(x => x !== "kubebuilder")
           .map(x => {
-            core.info(`Going to remove ${x}`)
-            execSync(`sudo rm /usr/local/kubebuilder/bin/${x}`)
-          })
+            core.info(`Going to remove ${x}`);
+            execSync(`sudo rm /usr/local/kubebuilder/bin/${x}`);
+          });
       } else {
-        core.debug(`No extra binary will be deleted.`)
+        core.debug(`No extra binary will be deleted.`);
       }
     }
 
@@ -73,4 +98,4 @@ async function run() {
   }
 }
 
-run()
+run();
