@@ -8,6 +8,11 @@ on:
 
 jobs:
   test-workflow:
+    strategy:
+      matrix:
+        kubebuilder-version:
+          - 2.3.1
+          - 3.0.0
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -15,7 +20,7 @@ jobs:
     - name: Test the workflow
       uses: ./
       with:
-        version: 2.3.1
+        version: ${{ matrix.kubebuilder-version }}
     - name: Check the existence of kubebuilder
       run: |-
         cd /usr/local/kubebuilder/bin
