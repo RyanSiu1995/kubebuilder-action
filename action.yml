@@ -5,6 +5,10 @@ inputs:
     description: 'Version of kubebuilder being installed'
     required: true
     default: '2.3.1'
+  kubebuilderOnly:
+    description: 'A flag to make the behaviour between 2.x.x and 3.x.x to be the same'
+    required: false
+    default: false
 runs:
   using: 'node12'
   main: 'index.js'
