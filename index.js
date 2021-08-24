@@ -48,7 +48,7 @@ async function run() {
   
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
-    const downloadUrl = `https://go.kubebuilder.io/dl/${version}/${osPlat}/${osArch}`;
+    const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${version}_${osPlat}_${osArch}.tar.gz`;
 
     if (majorVersion > 2) {
       core.debug(`MajorVersion is greater than 2`);
