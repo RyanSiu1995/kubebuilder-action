@@ -48,10 +48,11 @@ async function run() {
   
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
-    const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${version}_${osPlat}_${osArch}.tar.gz`;
+    
 
     if (majorVersion > 2) {
       core.debug(`MajorVersion is greater than 2`);
+      const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${osPlat}_${osArch}.tar.gz`;
       execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`);
       execSync(`sudo curl -L ${downloadUrl} -o /usr/local/kubebuilder/bin/kubebuilder`);
       execSync(`sudo chmod +x /usr/local/kubebuilder/bin/kubebuilder`);
@@ -76,6 +77,7 @@ async function run() {
         core.debug(`No extra binary will be installed.`);
       }
     } else {
+      const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${version}_${osPlat}_${osArch}.tar.gz`;
       execSync(`curl -L ${downloadUrl} | tar -xz -C /tmp/`);
       execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`);
       execSync(`ls -la /usr/local/kubebuilder/bin`);
