@@ -52,7 +52,7 @@ async function run() {
 
     if (majorVersion > 2) {
       core.debug(`MajorVersion is greater than 2`);
-      const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${osPlat}_${osArch}.tar.gz`;
+      const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${osPlat}_${osArch}`;
       execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`);
       execSync(`sudo curl -L ${downloadUrl} -o /usr/local/kubebuilder/bin/kubebuilder`);
       execSync(`sudo chmod +x /usr/local/kubebuilder/bin/kubebuilder`);
