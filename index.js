@@ -7,6 +7,7 @@ const child_process = require('child_process');
 
 const supportedCombination = ["darwin-amd64", "linux-amd64", "linux-arm64", "linux-ppc64le"];
 const installedBinary = ["kubectl", "kube-apiserver", "kubebuilder", "etcd"];
+const defaultBranch = ["master", "main"];
 
 function execSync(command) {
   child_process.execSync(command, {shell: '/bin/bash'});
@@ -18,7 +19,9 @@ async function run() {
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
     let etcdVersion = core.getInput('etcdVersion');
     let kubernetesVersion = core.getInput('kubernetesVersion');
-    const majorVersion = version.split(".")[0];
+    if (!defaultBranch.includes(version)) {
+      const majorVersion = version.split(".")[0];
+    }
 
     if (kubebuilderOnly && etcdVersion) {
       core.warning("kubebuilderOnly is activated. etcdVersion will not be respected.");
@@ -48,9 +51,7 @@ async function run() {
   
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
-    
-
-    if (majorVersion > 2) {
+    if (defaultBranch.includes(version) || majorVersion > 2) {
       core.debug(`MajorVersion is greater than 2`);
       const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${osPlat}_${osArch}`;
       execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`);
