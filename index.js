@@ -19,8 +19,12 @@ async function run() {
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
     let etcdVersion = core.getInput('etcdVersion');
     let kubernetesVersion = core.getInput('kubernetesVersion');
+    let majorVersion;
     if (!defaultBranch.includes(version)) {
-      const majorVersion = version.split(".")[0];
+      majorVersion = version.split(".")[0];
+    } else {
+      // Set this as infinitely large
+      majorVersion = 999
     }
 
     if (kubebuilderOnly && etcdVersion) {
