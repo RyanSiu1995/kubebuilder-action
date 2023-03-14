@@ -16,5 +16,5 @@ inputs:
     description: 'Valid if kubebuilderOnly is false for 3.0.0+. The action will install kubectl and kube-apiserver with this version'
     required: false
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'index.js'
