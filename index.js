@@ -5,6 +5,7 @@ const child_process = require('child_process');
 
 const supportedCombination = ["darwin-amd64", "linux-amd64", "linux-arm64", "linux-ppc64le"];
 const installedBinary = ["kubectl", "kube-apiserver", "kubebuilder", "etcd"];
+const defaultBranch = ["master", "main"];
 
 function execSync(command) {
   child_process.execSync(command, {shell: '/bin/bash'});
@@ -16,9 +17,13 @@ async function run() {
 
     const version = core.getInput('version');
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
+    const isLatest = defaultBranch.includes(version);
     let etcdVersion = core.getInput('etcdVersion');
     let kubernetesVersion = core.getInput('kubernetesVersion');
-    const majorVersion = version.split(".")[0];
+    let majorVersion = 999;
+    if (!isLatest) {
+      majorVersion = version.split(".")[0];
+    }
 
     if (kubebuilderOnly && etcdVersion) {
       core.warning("kubebuilderOnly is activated. etcdVersion will not be respected.");
@@ -48,9 +53,7 @@ async function run() {
   
     core.info(`Going to install kubebuilder ${version} for ${osPlat}-${osArch}`);
   
-    
-
-    if (majorVersion > 2) {
+    if (!isLatest || majorVersion > 2) {
       core.debug(`MajorVersion is greater than 2`);
       const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${osPlat}_${osArch}`;
       execSync(`sudo mkdir -p /usr/local/kubebuilder/bin`);
@@ -77,7 +80,10 @@ async function run() {
         core.debug(`No extra binary will be installed.`);
       }
     } else {
-      const downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${version}_${osPlat}_${osArch}.tar.gz`;
+      let downloadUrl = `https://go.kubebuilder.io/dl/master/${osPlat}/${osArch}`;
+      if (!isLatest) {
+        downloadUrl = `https://github.com/kubernetes-sigs/kubebuilder/releases/download/v${version}/kubebuilder_${version}_${osPlat}_${osArch}.tar.gz`;
+      }
       execSync(`curl -L ${downloadUrl} | tar -xz -C /tmp/`);
       execSync(`sudo mv /tmp/kubebuilder_${version}_${osPlat}_${osArch}/ /usr/local/kubebuilder/`);
       execSync(`ls -la /usr/local/kubebuilder/bin`);
