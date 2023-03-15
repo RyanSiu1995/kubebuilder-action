@@ -12,7 +12,7 @@ function execSync(command) {
 
 async function run() {
   try {
-    core.debug(`Current nodeJS version is ${process.version}`);
+    core.debug(`NodeJS version: ${process.version}`);
 
     const version = core.getInput('version');
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
