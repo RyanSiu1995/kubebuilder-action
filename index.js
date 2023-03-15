@@ -1,8 +1,6 @@
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
 const os = require('os');
-const path = require('path');
-const fs = require('fs');
 const child_process = require('child_process');
 
 const supportedCombination = ["darwin-amd64", "linux-amd64", "linux-arm64", "linux-ppc64le"];
@@ -14,6 +12,8 @@ function execSync(command) {
 
 async function run() {
   try {
+    core.debug(`NodeJS version: ${process.version}`);
+
     const version = core.getInput('version');
     const kubebuilderOnly = core.getInput('kubebuilderOnly') === 'true';
     let etcdVersion = core.getInput('etcdVersion');
