@@ -15,6 +15,9 @@ inputs:
   kubernetesVersion:
     description: 'Valid if kubebuilderOnly is false for 3.0.0+. The action will install kubectl and kube-apiserver with this version'
     required: false
+  useSudo:
+    description: 'Use sudo in the workflow'
+    default: true
 runs:
   using: 'node16'
   main: 'index.js'
