@@ -36,7 +36,7 @@ major version of kubebuilder is greater than or equal to 3.
 ## Example usage
 
 ```yaml
-uses: RyanSiu1995/kubebuilder-action@v1.3.0
+uses: RyanSiu1995/kubebuilder-action@v1.3.1
 with:
   version: 3.0.0
 ```
