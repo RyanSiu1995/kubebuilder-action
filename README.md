@@ -27,6 +27,12 @@ This action provides a sugar syntax to install the kubebuilder
 major version of kubebuilder is greater than or equal to 3.
  Default to use latest version.
 
+ ### `useSudo`
+
+ **Optional** use sudo command in most of the operations. This is useful when
+  your machine has no sudo command preinstalled.
+  Default as `true`.
+
 ## Example usage
 
 ```yaml
